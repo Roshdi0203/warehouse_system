@@ -1,0 +1,5 @@
+FROM python:3.10  # تأكد من أن إصدار Python مكتوب بشكل صحيح
+WORKDIR /app      # تعيين مجلد العمل داخل الحاوية
+COPY . /app       # نسخ الملفات من المشروع إلى الحاوية
+RUN pip install -r requirements.txt  # تثبيت الحزم المطلوبة
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]  # تشغيل Flask

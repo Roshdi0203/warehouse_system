@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  warehouse_database:
+    image: postgres:17
+    container_name: warehouse_postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: warehouse_sys
+    ports:
+      - "5433:5432"
+    volumes:
+      - warehouse_db_data:/var/lib/postgresql/data
+
+  warehouse_admin_panel:
+    image: dpage/pgadmin4
+    container_name: warehouse_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: warehouse_admin@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+    ports:
+      - "8081:80"
+    depends_on:
+      - warehouse_database
+
+  flask_app:
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - warehouse_database
+
+volumes:
+  warehouse_db_data:
